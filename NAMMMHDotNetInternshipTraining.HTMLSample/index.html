@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Full Inventory Management System</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <style>
+    body{background:#f5f6fa}
+    .card{border:none;border-radius:16px;box-shadow:0 3px 12px rgba(0,0,0,.08)}
+    .nav-pills .nav-link.active{border-radius:10px}
+    .section{padding:16px 0}
+  </style>
+</head>
+<body>
+<div class="container py-4">
+  <h2 class="mb-4">Inventory Management System</h2>
+
+  <ul class="nav nav-pills mb-4" id="tabs">
+    <li class="nav-item"><button class="nav-link active" data-bs-toggle="pill" data-bs-target="#dashboard">Dashboard</button></li>
+    <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#categories">Categories</button></li>
+    <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#products">Products</button></li>
+    <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#suppliers">Suppliers</button></li>
+    <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#customers">Customers</button></li>
+    <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#purchase">Purchase</button></li>
+    <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#sale">Sale</button></li>
+  </ul>
+
+  <div class="tab-content">
+    <div class="tab-pane fade show active" id="dashboard">
+      <div class="row g-3">
+        <div class="col-md-3"><div class="card p-3"><h6>Total Categories</h6><h3 id="catCount"></h3></div></div>
+        <div class="col-md-3"><div class="card p-3"><h6>Total Products</h6><h3 id="prodCount"></h3></div></div>
+        <div class="col-md-3"><div class="card p-3"><h6>Total Suppliers</h6><h3 id="supCount"></h3></div></div>
+        <div class="col-md-3"><div class="card p-3"><h6>Low Stock</h6><h3 id="lowStock"></h3></div></div>
+      </div>
+    </div>
+
+    <div class="tab-pane fade" id="categories"><div class="section"><div id="categorySection"></div></div></div>
+    <div class="tab-pane fade" id="products"><div class="section"><div id="productSection"></div></div></div>
+    <div class="tab-pane fade" id="suppliers"><div class="section"><div id="supplierSection"></div></div></div>
+    <div class="tab-pane fade" id="customers"><div class="section"><div id="customerSection"></div></div></div>
+    <div class="tab-pane fade" id="purchase"><div class="section"><div id="purchaseSection"></div></div></div>
+    <div class="tab-pane fade" id="sale"><div class="section"><div id="saleSection"></div></div></div>
+  </div>
+</div>
+
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editModalLabel">Edit Entry</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="editForm">
+          </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" id="updateBtn">Update Changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+const db = {
+  categories: JSON.parse(localStorage.getItem('categories')) || [],
+  products: JSON.parse(localStorage.getItem('products')) || [],
+  suppliers: JSON.parse(localStorage.getItem('suppliers')) || [],
+  customers: JSON.parse(localStorage.getItem('customers')) || [],
+  purchases: JSON.parse(localStorage.getItem('purchases')) || [],
+  sales: JSON.parse(localStorage.getItem('sales')) || []
+};
+
+function save(){ Object.keys(db).forEach(k=>localStorage.setItem(k, JSON.stringify(db[k]))); }
+function id(){ return Date.now() + Math.floor(Math.random()*1000); }
+function updateDashboard(){
+  $('#catCount').text(db.categories.length);
+  $('#prodCount').text(db.products.length);
+  $('#supCount').text(db.suppliers.length);
+  $('#lowStock').text(db.products.filter(x=>Number(x.qty)<=5).length);
+}
+
+function renderSimpleCRUD(section, key, fields){
+  let html = `<div class='card p-4 mb-3'><div class='row g-2'>`;
+  fields.forEach(f=> html += `<div class='col'><input class='form-control ${key}-${f}' placeholder='${f}'></div>`);
+  html += `<div class='col'><button class='btn btn-primary w-100 ${key}-save'>Save</button></div></div></div>`;
+  html += `<div class='card p-3'><table class='table'><thead><tr><th>ID</th>${fields.map(f=>`<th>${f}</th>`).join('')}<th>Action</th></tr></thead><tbody>`;
+  db[key].forEach(r=>{
+    html += `<tr><td>${r.id}</td>${fields.map(f=>`<td>${r[f]}</td>`).join('')}<td><button class='btn btn-sm btn-warning me-1 edit' data-key='${key}' data-id='${r.id}'>Edit</button><button class='btn btn-sm btn-danger del' data-key='${key}' data-id='${r.id}'>Delete</button></td></tr>`;
+  });
+  html += `</tbody></table></div>`;
+  $(section).html(html);
+
+  $(`.${key}-save`).off().click(function(){
+    let obj={id:id()};
+    fields.forEach(f=> obj[f] = $(`.${key}-${f}`).val());
+    db[key].push(obj); save(); refresh();
+  });
+}
+
+function renderProducts(){
+  let options = db.categories.map(c=>`<option value="${c.name||c.category}">${c.name||c.category}</option>`).join('');
+  let html = `
+    <div class='card p-4 mb-3'>
+      <div class='row g-2'>
+        <div class='col'><input class='form-control p-name' placeholder='name'></div>
+        <div class='col'><input class='form-control p-price' type='number' placeholder='price'></div>
+        <div class='col'><input class='form-control p-qty' type='number' placeholder='qty'></div>
+        <div class='col'><select class='form-control p-cat'><option value=''>Category</option>${options}</select></div>
+        <div class='col'><button class='btn btn-primary w-100 p-save'>Save</button></div>
+      </div>
+    </div>
+    <div class='card p-3'><table class='table'><tr><th>Name</th><th>Price</th><th>Qty</th><th>Category</th><th>Action</th></tr>
+    ${db.products.map(p=>`<tr><td>${p.name}</td><td>${p.price}</td><td>${p.qty}</td><td>${p.category}</td><td><button class='btn btn-sm btn-warning me-1 edit' data-key='products' data-id='${p.id}'>Edit</button><button class='btn btn-danger btn-sm del' data-key='products' data-id='${p.id}'>Delete</button></td></tr>`).join('')}
+    </table></div>`;
+  $('#productSection').html(html);
+  $('.p-save').off().click(()=>{ db.products.push({id:id(), name:$('.p-name').val(), price:$('.p-price').val(), qty:$('.p-qty').val(), category:$('.p-cat').val()}); save(); refresh(); });
+}
+
+function renderTransactions(section,key,title){
+  let products = db.products.map(p=>`<option value='${p.id}'>${p.name}</option>`).join('');
+  let html = `<div class='card p-4 mb-3'><div class='row g-2'>
+    <div class='col'><select class='form-control ${key}-product'>${products}</select></div>
+    <div class='col'><input class='form-control ${key}-qty' type='number' placeholder='qty'></div>
+    <div class='col'><button class='btn btn-success ${key}-save'>${title}</button></div>
+  </div></div>`;
+  html += `<div class='card p-3'><table class='table'><tr><th>ID</th><th>Product</th><th>Qty</th></tr>`;
+  db[key].forEach(t=> html += `<tr><td>${t.id}</td><td>${t.product}</td><td>${t.qty}</td></tr>`);
+  html += '</table></div>';
+  $(section).html(html);
+
+  $(`.${key}-save`).off().click(()=>{
+    let pid = Number($(`.${key}-product`).val());
+    let qty = Number($(`.${key}-qty`).val());
+    let p = db.products.find(x=>x.id===pid);
+    if(!p) return;
+    if(key==='purchases') p.qty = Number(p.qty)+qty;
+    if(key==='sales' && Number(p.qty)>=qty) p.qty = Number(p.qty)-qty;
+    db[key].push({id:id(), product:p.name, qty});
+    save(); refresh();
+  });
+}
+
+function refresh(){
+  renderSimpleCRUD('#categorySection','categories',['name']);
+  renderProducts();
+  renderSimpleCRUD('#supplierSection','suppliers',['name','phone']);
+  renderSimpleCRUD('#customerSection','customers',['name','phone']);
+  renderTransactions('#purchaseSection','purchases','Purchase');
+  renderTransactions('#saleSection','sales','Sale');
+  updateDashboard();
+}
+
+$(document).on('click','.del', function(){
+  const key=$(this).data('key');
+  const rowId=Number($(this).data('id'));
+  db[key]=db[key].filter(x=>x.id!==rowId);
+  save(); refresh();
+});
+
+refresh();
+</script>
+
+<script>
+let currentEdit = { key:null, id:null };
+
+function generateCode(prefix){
+  return prefix + '-' + Date.now();
+}
+
+// Search box inject
+$('.container').prepend(`<div class='mb-3'><input id='globalSearch' class='form-control' placeholder='Search Products / Supplier / Customer'></div>`);
+$(document).on('keyup','#globalSearch', function(){
+  let q = $(this).val().toLowerCase();
+  $('tbody tr').each(function(){
+    $(this).toggle($(this).text().toLowerCase().includes(q));
+  });
+});
+
+// Enhance transactions with Voucher / Invoice Numbering
+const oldRenderTransactions = renderTransactions;
+renderTransactions = function(section,key,title){
+  oldRenderTransactions(section,key,title);
+  $(`${section} .card:first`).prepend(`<div class='mb-2 fw-bold'>${key==='purchases' ? 'Voucher No: '+generateCode('PUR') : 'Invoice No: '+generateCode('SAL')}</div>`);
+}
+
+// Edit Functionality for Master data
+$(document).on('click', '.edit', function(){
+  const key = $(this).data('key');
+  const id = Number($(this).data('id'));
+  const item = db[key].find(x => x.id === id);
+  
+  if(!item) return;
+  
+  currentEdit = { key, id };
+  let formHtml = '';
+  
+  Object.keys(item).forEach(field => {
+    if(field === 'id') return;
+    
+    formHtml += `<div class="mb-3">
+      <label class="form-label text-capitalize">${field}</label>`;
+      
+    if (key === 'products' && field === 'category') {
+      let options = db.categories.map(c => `<option value="${c.name||c.category}" ${item[field] === (c.name||c.category) ? 'selected' : ''}>${c.name||c.category}</option>`).join('');
+      formHtml += `<select class="form-control" name="${field}"><option value="">Category</option>${options}</select>`;
+    } else {
+      formHtml += `<input class="form-control" name="${field}" value="${item[field]}">`;
+    }
+    formHtml += `</div>`;
+  });
+  
+  $('#editForm').html(formHtml);
+  $('#editModal').modal('show');
+});
+
+$('#updateBtn').click(function(){
+  const { key, id } = currentEdit;
+  const item = db[key].find(x => x.id === id);
+  
+  if(item) {
+    $('#editForm input, #editForm select').each(function(){
+      const field = $(this).attr('name');
+      const val = $(this).val();
+      item[field] = isNaN(val) || val === '' ? val : Number(val);
+    });
+    
+    save();
+    refresh();
+    $('#editModal').modal('hide');
+  }
+});
+</script>
+</body>
+</html>
