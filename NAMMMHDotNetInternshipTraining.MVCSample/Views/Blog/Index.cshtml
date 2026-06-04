@@ -1,0 +1,49 @@
+﻿@model BlogListResponseModel
+
+
+@{
+    int count = (Model.pageNo - 1) * Model.pageSize; // Calculate the starting index for the current page
+    int pageNo = Model.pageNo;
+    int pageSize = Model.pageSize;
+    int pageCount = Model.pageCount;
+}
+<a href="/blog/create" class="btn btn-primary mb-3">Create New Blog</a>
+
+<table class="table table-bordered table-responsive">
+    <thead>
+        <tr>
+            <th>Action</th>
+            <th>No.</th>
+            
+            <th scope="col">BlogTitle</th>
+            <th scope="col">Author</th>
+            <th scope="col">Content</th>
+            
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var blog in Model.Data)
+        {
+             // Increment the count for each blog
+            <tr>
+                
+                <td><a href="/blog/edit?BlogId=@blog.BlogId" class="btn btn-outline-warning">Edit</a>
+                    <a href="/blog/delete?BlogId=@blog.BlogId" class="btn btn-outline-danger">Delete</a>
+                </td>
+                <td>@(++count)</td>
+               
+                <td>@blog.BlogTitle</td>
+                <td>@blog.Author</td>
+                <td>@blog.Content</td>
+            </tr>
+        }
+        </tbody>
+ </table>
+
+@await Html.PartialAsync("_Pagination",new PaginationModel
+{
+    pageNo = Model.pageNo,
+    pageCount = Model.pageCount,
+    pageSize = Model.pageSize
+});
+

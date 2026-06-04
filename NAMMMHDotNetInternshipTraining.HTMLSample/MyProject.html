@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <title>Document</title>
+    
+</head>
+
+<body>
+    <nav class="flex justify-center space-x-4 pt-5">
+  <a href="/dashboard" class="font-bold rounded-lg px-3 py-2 text-gray-700 hover:bg-gray-100 hover:text-gray-900">
+    Home
+  </a>
+  <a href="/team" class="font-bold rounded-lg px-3 py-2 text-gray-700 hover:bg-gray-100 hover:text-gray-900">
+    Team
+  </a>
+  <a href="/projects" class="font-bold rounded-lg px-3 py-2 text-gray-700 hover:bg-gray-100 hover:text-gray-900">
+    Projects
+  </a>
+  <a href="/reports" class="font-bold rounded-lg px-3 py-2 text-gray-700 hover:bg-gray-100 hover:text-gray-900">
+    Reports
+  </a>
+</nav>
+<h1>Hello world</h1>
+Email: <input type="email" name="email" id="email"><br>
+<p>Hi this is me</p><br>
+<button>Save</button>
+
+
+
+
+    <script src="js/jquery-4.0.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+        $("button").click(function(){
+  $("h1").fadeIn();
+  $("p").fadeIn("slow");
+  //$("#div3").fadeIn(3000);
+});
+        });
+
+    </script>
+</body>
+
+</html>

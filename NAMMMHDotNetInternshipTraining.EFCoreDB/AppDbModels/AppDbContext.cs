@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
-namespace NAMMMHDotNetInternshipTraining.EFCoreSample2.DataBaseFirst.AppDbModels;
+namespace NAMMMHDotNetInternshipTraining.EFCoreDB.AppDbModels;
 
 public partial class AppDbContext : DbContext
 {
@@ -15,15 +15,26 @@ public partial class AppDbContext : DbContext
     {
     }
 
-    public virtual DbSet<TblStudent> TblStudents { get; set; }
-    public IEnumerable<object> Tbl_Student { get; set; }
+    public virtual DbSet<TblBlog> TblBlogs { get; set; }
 
-//    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-//        => optionsBuilder.UseSqlServer("Server=.;Database=NAMMMHDotNetInternshipTraining;User ID=sa; Password=sasa@123;Trusted_Connection=True;TrustServerCertificate=True;");
+    public virtual DbSet<TblStudent> TblStudents { get; set; }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseSqlServer("Server=.;Database=NAMMMHDotNetInternshipTraining;User ID=sa; Password=sasa@123;Trusted_Connection=True;TrustServerCertificate=True;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<TblBlog>(entity =>
+        {
+            entity.HasKey(e => e.BlogId).HasName("PK__Tbl_Blog__54379E307DCB8F88");
+
+            entity.ToTable("Tbl_Blogs");
+
+            entity.Property(e => e.BlogAuthor).HasMaxLength(255);
+            entity.Property(e => e.BlogTitle).HasMaxLength(255);
+        });
+
         modelBuilder.Entity<TblStudent>(entity =>
         {
             entity.HasKey(e => e.StudentId);

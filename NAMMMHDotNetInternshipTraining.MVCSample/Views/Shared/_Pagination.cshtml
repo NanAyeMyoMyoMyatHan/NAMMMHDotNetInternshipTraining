@@ -1,0 +1,117 @@
+﻿@model PaginationModel
+@{
+    int pageNo = Model.pageNo;
+    int pageSize = Model.pageSize;
+    int pageCount = Model.pageCount;
+}
+<nav aria-label="...">
+    <ul class="pagination">
+        @if (pageNo == 1)
+        {
+            <li class="page-item disabled">
+                <a class="page-link">Previous</a>
+            </li>
+        }
+        else
+        {
+            <li class="page-item">
+                <a class="page-link"
+                   href="/Blog/Index?pageNo=@(pageNo - 1)&pageSize=@(Model.pageSize)">Previous</a>
+            </li>
+        }
+
+       
+        @if (pageNo > 3 && pageNo < pageCount - 2)
+        {
+            <li class="page-item">
+                <a class="page-link"
+                   href="/Blog/Index?pageNo=@(1)&pageSize=@(Model.pageSize)">@(1)</a>
+            </li>
+
+            <li class="page-item disabled">
+                <a class="page-link">...</a>
+            </li>
+
+            @for (int i = pageNo - 2; i <= pageNo + 2; i++)
+            {
+                if (Model.pageNo == i)
+                {
+                    <li class="page-item active">
+                        <a class="page-link"
+                           href="/Blog/Index?pageNo=@(i)&pageSize=@(Model.pageSize)" aria-current="page">@i</a>
+                    </li>
+                }
+                else
+                {
+
+                    <li class="page-item">
+                        <a class="page-link"
+                           href="/Blog/Index?pageNo=@(i)&pageSize=@(Model.pageSize)">@(i)</a>
+                    </li>
+                }
+            }
+            <li class="page-item disabled">
+                <a class="page-link">...</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link"
+                   href="/Blog/Index?pageNo=@(pageCount)&pageSize=@(Model.pageSize)">@(pageCount)</a>
+            </li>
+        }
+
+        
+        else
+        {
+            @for (int i = 1; i <= 4; i++)
+            {
+                if (Model.pageNo == i)
+                {
+                    <li class="page-item active">
+                        <a class="page-link"
+                           href="/Blog/Index?pageNo=@(i)&pageSize=@(Model.pageSize)" aria-current="page">@i</a>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item">
+                        <a class="page-link"
+                           href="/Blog/Index?pageNo=@(i)&pageSize=@(Model.pageSize)">@(i)</a>
+                    </li>
+                }
+            }
+            <li class="page-item disabled">
+                <a class="page-link">...</a>
+            </li>
+
+            @for (int i = pageCount - 3; i <= pageCount; i++)
+            {
+                if (Model.pageNo == i)
+                {
+                    <li class="page-item active">
+                        <a class="page-link"
+                           href="/Blog/Index?pageNo=@(i)&pageSize=@(Model.pageSize)" aria-current="page">@i</a>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item"><a class="page-link" href="/Blog/Index?pageNo=@(i)&pageSize=@(Model.pageSize)">@(i)</a></li>
+                }
+            }
+
+        }
+        @if (pageNo == pageCount)
+        {
+            <li class="page-item disabled">
+                <a class="page-link">Next</a>
+            </li>
+        }
+        else
+        {
+            <li class="page-item">
+                <a class="page-link"
+                   href="/Blog/Index?pageNo=@(pageNo + 1)&pageSize=@(Model.pageSize)">Next</a>
+            </li>
+        }
+
+    </ul>
+</nav>

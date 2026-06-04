@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TB5 HTML Projects Hub</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Prata&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink: #102a43;
+      --sand: #fffaf2;
+      --accent: #ff7a18;
+      --accent-2: #0f766e;
+      --card: rgba(255, 255, 255, 0.84);
+    }
+    body {
+      font-family: "Manrope", sans-serif;
+      background:
+        radial-gradient(circle at 10% 20%, #ffe8c2 0%, transparent 35%),
+        radial-gradient(circle at 90% 10%, #c7f9f0 0%, transparent 30%),
+        radial-gradient(circle at 50% 90%, #d9ebff 0%, transparent 35%),
+        var(--sand);
+      color: var(--ink);
+    }
+    .title-font { font-family: "Prata", serif; }
+    .card {
+      background: var(--card);
+      border: 1px solid rgba(16, 42, 67, 0.08);
+      box-shadow: 0 14px 30px rgba(16, 42, 67, 0.08);
+      backdrop-filter: blur(6px);
+    }
+    .launch {
+      background: linear-gradient(135deg, var(--accent), #ff9f43);
+    }
+    .launch:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(255, 122, 24, 0.35);
+    }
+  </style>
+</head>
+<body class="min-h-screen">
+  <main class="max-w-6xl mx-auto px-4 py-10 sm:py-14">
+    <header class="mb-10">
+      <p class="uppercase tracking-[0.2em] text-xs font-extrabold text-teal-700">Project Launcher</p>
+      <h1 class="title-font text-4xl sm:text-5xl mt-2">TB5 HTML Projects Hub</h1>
+      <p class="mt-3 text-slate-700 max-w-2xl">
+        Open any project directly from this page. Each card links to a working HTML entry point.
+      </p>
+    </header>
+
+    <section class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      <article class="card rounded-2xl p-5 flex flex-col">
+        <h2 class="text-lg font-extrabold">MT - Claude Code</h2>
+        <p class="text-sm mt-2 text-slate-700 flex-1">Inventory management with Tailwind + jQuery.</p>
+        <a class="launch mt-4 inline-flex justify-center rounded-xl px-4 py-2.5 text-white font-bold transition"
+           href="./mt/Claude-Code/index.html">Open Project</a>
+      </article>
+
+      <article class="card rounded-2xl p-5 flex flex-col">
+        <h2 class="text-lg font-extrabold">MT - GitHub Copilot</h2>
+        <p class="text-sm mt-2 text-slate-700 flex-1">Inventory UI variant with table, details panel, and modals.</p>
+        <a class="launch mt-4 inline-flex justify-center rounded-xl px-4 py-2.5 text-white font-bold transition"
+           href="./mt/GitHub-Copilot/index.html">Open Project</a>
+      </article>
+
+      <article class="card rounded-2xl p-5 flex flex-col">
+        <h2 class="text-lg font-extrabold">MT - Bootstrap + jQuery</h2>
+        <p class="text-sm mt-2 text-slate-700 flex-1">NeoInventory implementation with Bootstrap styling.</p>
+        <a class="launch mt-4 inline-flex justify-center rounded-xl px-4 py-2.5 text-white font-bold transition"
+           href="./mt/Google-Antigravity/Bootstrap-jQuery/index.html">Open Project</a>
+      </article>
+
+      <article class="card rounded-2xl p-5 flex flex-col">
+        <h2 class="text-lg font-extrabold">MT - Tailwind + jQuery</h2>
+        <p class="text-sm mt-2 text-slate-700 flex-1">Glassmorphism inventory variant with Tailwind.</p>
+        <a class="launch mt-4 inline-flex justify-center rounded-xl px-4 py-2.5 text-white font-bold transition"
+           href="./mt/Google-Antigravity/Tailwind-jQuery/index.html">Open Project</a>
+      </article>
+
+      <article class="card rounded-2xl p-5 flex flex-col">
+        <h2 class="text-lg font-extrabold">MTH - AutoCare Manage</h2>
+        <p class="text-sm mt-2 text-slate-700 flex-1">Vehicle service record management app (Bootstrap version).</p>
+        <a class="launch mt-4 inline-flex justify-center rounded-xl px-4 py-2.5 text-white font-bold transition"
+           href="./mth/index.html">Open Project</a>
+      </article>
+
+      <article class="card rounded-2xl p-5 flex flex-col">
+        <h2 class="text-lg font-extrabold">MTH - Tailwind Version</h2>
+        <p class="text-sm mt-2 text-slate-700 flex-1">Tailwind UI variant of AutoCare Manage.</p>
+        <a class="launch mt-4 inline-flex justify-center rounded-xl px-4 py-2.5 text-white font-bold transition"
+           href="./mth/tailwind_index.html">Open Project</a>
+      </article>
+
+      <article class="card rounded-2xl p-5 flex flex-col">
+        <h2 class="text-lg font-extrabold">SSDL - StayFinder</h2>
+        <p class="text-sm mt-2 text-slate-700 flex-1">Rental listings concept app for owners and renters.</p>
+        <a class="launch mt-4 inline-flex justify-center rounded-xl px-4 py-2.5 text-white font-bold transition"
+           href="./ssdl/StayFinder.html">Open Project</a>
+      </article>
+
+      <article class="card rounded-2xl p-5 flex flex-col">
+        <h2 class="text-lg font-extrabold">SSDL - StayFinder Bootstrap</h2>
+        <p class="text-sm mt-2 text-slate-700 flex-1">Bootstrap version with hero search and listing cards.</p>
+        <a class="launch mt-4 inline-flex justify-center rounded-xl px-4 py-2.5 text-white font-bold transition"
+           href="./ssdl/StayFinderBootstrap.html">Open Project</a>
+      </article>
+
+      <article class="card rounded-2xl p-5 flex flex-col">
+        <h2 class="text-lg font-extrabold">TZH - VelvetBrew POS</h2>
+        <p class="text-sm mt-2 text-slate-700 flex-1">Coffee shop POS with menu, cart, checkout, and analytics.</p>
+        <a class="launch mt-4 inline-flex justify-center rounded-xl px-4 py-2.5 text-white font-bold transition"
+           href="./tzh/index.html">Open Project</a>
+      </article>
+    </section>
+
+    <footer class="mt-10 text-xs text-slate-600">
+      Tip: open this file first to navigate all project demos quickly.
+    </footer>
+  </main>
+</body>
+</html>

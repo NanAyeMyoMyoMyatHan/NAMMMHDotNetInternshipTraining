@@ -1,0 +1,17 @@
+﻿using System;
+using System.Collections.Generic;
+
+namespace NAMMMHDotNetInternshipTraining.EFCoreDB.AppDbModels;
+
+public partial class TblBlog
+{
+    public string Author;
+
+    public int BlogId { get; set; }
+
+    public string BlogTitle { get; set; } = null!;
+
+    public string BlogAuthor { get; set; } = null!;
+
+    public string BlogContent { get; set; } = null!;
+}
