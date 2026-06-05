@@ -16,7 +16,7 @@
     <label class="form-label">Content</label>
     <textarea class="form-control" id="txtContent" name="txtContent" rows="3"></textarea>
 </div>
-<a href="/blog" class="btn btn-secondary">Cancel</a>
+<a href="/blogajax" class="btn btn-secondary">Cancel</a>
 <button type="button" class="btn btn-primary" id="btnUpdate">Update</button>
 
 @section scripts {
@@ -30,13 +30,13 @@
                 success: function (response) {
                     if(response.Data)
                     {
-                        console.log("Hello");
-                    $('#txtTitle').val("response.Data.blogTitle");
-                    $('#txtAuthor').val(response.Data.blogAuthor);
-                    $('#txtContent').val(response.Data.blogContent);
+                       
+                    $('#txtTitle').val(response.Data.BlogTitle);
+                    $('#txtAuthor').val(response.Data.Author);
+                    $('#txtContent').val(response.Data.Content);
                     }
                     else{
-                        alert(response.Message);+
+                        alert(response.Message);
                     }
                     
                 },
@@ -47,8 +47,9 @@
         
 
         $('#btnUpdate').click(function () {
-            const blogId = $('#hfBlogId').val();
+           const blogId = $('#txtId').val();
             const blogData = {
+                //BlogId: $('#txtId').val(),
                 BlogTitle: $('#txtTitle').val(),
                 BlogAuthor: $('#txtAuthor').val(),
                 BlogContent: $('#txtContent').val()
@@ -59,9 +60,9 @@
                 type: "POST",
                 data: blogData,
                 success: function (response) {
-                    alert(response.message);
-                    if (response.isSuccess) {
-                        window.location.href = "/blogajax";
+                    alert(response.Message);
+                    if (response.IsSuccess) {
+                        window.location.href = "/BlogAjax";
                     }
                 },
                 error: function (xhr) {

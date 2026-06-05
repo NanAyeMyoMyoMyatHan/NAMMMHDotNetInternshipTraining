@@ -63,8 +63,9 @@
                 url: `/BlogAjax/Delete/${id}`,
                 type: "POST",
                 success: function (response) {
-                    alert(response.message);
-                    if (response.isSuccess) {
+                    alert(response.Message);
+                  //  $(`#blog-row-${id}`).fadeOut(500, function() { $(this).remove(); });
+                    if (response.IsSuccess) {
                         loadBlogs(); // Reload the table data
                     }
                 },

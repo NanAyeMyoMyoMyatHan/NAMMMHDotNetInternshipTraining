@@ -54,8 +54,8 @@ namespace NAMMMHDotNetInternshipTraining.MVCSample.Controllers
             };
             return Json(response);
         }
-        [HttpPost]
-        public async Task<IActionResult> EditData(BlogEditRequestModel requestModel,int id)
+        [HttpGet]
+        public async Task<IActionResult> EditData(int id)
         {
             var blog = await _appDbContext.TblBlogs.FirstOrDefaultAsync(x=>x.BlogId==id);
             if (blog == null)
@@ -80,18 +80,24 @@ namespace NAMMMHDotNetInternshipTraining.MVCSample.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> Update(int id, TblBlog blog)
+        public async Task<IActionResult> Update(int id, [FromForm]BlogUpdateRequestModel requestModel)
         {
-            var item = await _appDbContext .TblBlogs.FirstOrDefaultAsync(x => x.BlogId == id);
+            if(requestModel is null)
+            {
+                return Json(new { IsSuccess = false, Message = "data is missing" });
+            }
+            var item = await _appDbContext .TblBlogs.
+                FirstOrDefaultAsync(x => x.BlogId == id);
             if (item is null)
             {
                 return Json(new { IsSuccess = false, Message = "Blog not found." });
             }
 
-            item.BlogTitle = blog.BlogTitle;
-            item.BlogAuthor = blog.BlogAuthor;
-            item.BlogContent = blog.BlogContent;
+            item.BlogTitle = requestModel.BlogTitle;
+            item.BlogAuthor = requestModel.BlogAuthor;
+            item.BlogContent = requestModel.BlogContent;
 
+           
             var result = await _appDbContext.SaveChangesAsync();
             var response = new
             {
@@ -115,6 +121,7 @@ namespace NAMMMHDotNetInternshipTraining.MVCSample.Controllers
             var response = new
             {
                 IsSuccess = result > 0,
+
                 Message = result > 0 ? "Deleting Successful." : "Deleting Failed."
             };
             return Json(response);
