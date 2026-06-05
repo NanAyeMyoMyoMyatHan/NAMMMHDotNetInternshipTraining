@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 
 HttpClient client = new HttpClient();
-string baseUrl = "https://localhost:7006/api/student";
+string baseUrl = "https://localhost:7006/api/blog";
 
 await Read();
 await Edit();
